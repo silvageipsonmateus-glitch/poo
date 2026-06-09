@@ -85,7 +85,7 @@ public class Aluno {
 
     // Método para exibir os dados do aluno de forma organizada
     public void exibirDados() {
-        System.out.println("Matrícula: " + matricula + " | Nome: " + nome + " | Curso: " + curso);
+        System.out.println("Matrícula: " + matricula + " | Nome: " + nome + " | informática : " + curso);
         System.out.println("Nota 1: " + nota1 + " | Nota 2: " + nota2 + " | Média: " + media + " -> Situação: " + getSituacao());
         System.out.println("---------------------------------------------------------");
     }
