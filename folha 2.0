@@ -1,0 +1,144 @@
+import java.util.Scanner;
+
+/**
+ * Classe principal que executa o menu interativo e gerencia o vetor de alunos.
+ */
+public class Principal {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.util.System.in);
+        
+        // Uso de vetor (array) fixado em 100 posições para o cadastro
+        Aluno[] listaAlunos = new Aluno[100];
+        int totalAlunos = 0; // Controlador do tamanho preenchido do vetor
+        
+        int opcao = 0;
+
+        // Loop do Menu Interativo
+        do {
+            System.out.println("\n========= SISTEMA DE CADASTRO DE ALUNOS =========");
+            System.out.println("1. Cadastrar Aluno");
+            System.out.println("2. Listar Alunos");
+            System.out.println("3. Buscar Aluno pela Matrícula");
+            System.out.println("4. Calcular Média Geral da Escola");
+            System.out.println("5. Mostrar Alunos Aprovados");
+            System.out.println("6. Mostrar Alunos Reprovados");
+            System.out.println("7. Sair");
+            System.out.print("Escolha uma opção: ");
+            
+            opcao = scanner.nextInt();
+            scanner.nextLine(); // Limpar o buffer do teclado
+
+            switch (opcao) {
+                case 1:
+                    // Funcionalidade: Cadastrar aluno
+                    if (totalAlunos < listaAlunos.length) {
+                        System.out.print("Digite o nome do aluno: ");
+                        String nome = scanner.nextLine();
+                        System.out.print("Digite a matrícula: ");
+                        String matricula = scanner.nextLine();
+                        System.out.print("Digite o curso: ");
+                        String curso = scanner.nextLine();
+                        System.out.print("Digite a Nota 1: ");
+                        double n1 = scanner.nextDouble();
+                        System.out.print("Digite a Nota 2: ");
+                        double n2 = scanner.nextDouble();
+
+                        // Criação do objeto e armazenamento no vetor
+                        listaAlunos[totalAlunos] = new Aluno(nome, matricula, curso, n1, n2);
+                        totalAlunos++;
+                        System.out.println("Aluno cadastrado com sucesso!");
+                    } else {
+                        System.out.println("Erro: Limite de armazenamento do sistema atingido.");
+                    }
+                    break;
+
+                case 2:
+                    // Funcionalidade: Listar alunos
+                    if (totalAlunos == 0) {
+                        System.out.println("Nenhum aluno cadastrado no sistema.");
+                    } else {
+                        System.out.println("\n--- LISTA DE ALUNOS CADASTRADOS ---");
+                        for (int i = 0; i < totalAlunos; i++) {
+                            listaAlunos[i].exibirDados();
+                        }
+                    }
+                    break;
+
+                case 3:
+                    // Funcionalidade: Buscar aluno pela matrícula
+                    System.out.print("Digite a matrícula que deseja buscar: ");
+                    String buscaMatricula = scanner.nextLine();
+                    boolean encontrado = false;
+
+                    for (int i = 0; i < totalAlunos; i++) {
+                        if (listaAlunos[i].getMatricula().equalsIgnoreCase(buscaMatricula)) {
+                            System.out.println("\nAluno Encontrado:");
+                            listaAlunos[i].exibirDados();
+                            encontrado = true;
+                            break; // Sai do laço pois a matrícula é única
+                        }
+                    }
+                    if (!encontrado) {
+                        System.out.println("Aluno com a matrícula '" + buscaMatricula + "' não encontrado.");
+                    }
+                    break;
+
+                case 4:
+                    // Funcionalidade: Calcular média geral de todos os alunos
+                    if (totalAlunos == 0) {
+                        System.out.println("Não há alunos cadastrados para calcular a média geral.");
+                    } else {
+                        double somaMedias = 0;
+                        for (int i = 0; i < totalAlunos; i++) {
+                            somaMedias += listaAlunos[i].getMedia();
+                        }
+                        double mediaGeral = somaMedias / totalAlunos;
+                        System.out.printf("A média geral de todos os alunos cadastrados é: %.2f\n", mediaGeral);
+                    }
+                    break;
+
+                case 5:
+                    // Funcionalidade: Mostrar alunos aprovados (Média >= 7)
+                    System.out.println("\n--- ALUNOS APROVADOS (MÉDIA >= 7.0) ---");
+                    int aprovados = 0;
+                    for (int i = 0; i < totalAlunos; i++) {
+                        if (listaAlunos[i].getMedia() >= 7.0) {
+                            listaAlunos[i].exibirDados();
+                            aprovados++;
+                        }
+                    }
+                    if (aprovados == 0) {
+                        System.out.println("Nenhum aluno aprovado até o momento.");
+                    }
+                    break;
+
+                case 6:
+                    // Funcionalidade: Mostrar alunos reprovados (Média < 7)
+                    System.out.println("\n--- ALUNOS REPROVADOS (MÉDIA < 7.0) ---");
+                    int reprovados = 0;
+                    for (int i = 0; i < totalAlunos; i++) {
+                        if (listaAlunos[i].getMedia() < 7.0) {
+                            listaAlunos[i].exibirDados();
+                            reprovados++;
+                        }
+                    }
+                    if (reprovados == 0) {
+                        System.out.println("Nenhum aluno reprovado até o momento.");
+                    }
+                    break;
+
+                case 7:
+                    // Funcionalidade: Sair
+                    System.out.println("Encerrando o sistema... Até mais!");
+                    break;
+
+                default:
+                    System.out.println("Opção inválida! Tente novamente.");
+                    break;
+            }
+
+        } while (opcao != 7);
+
+        scanner.close();
+    }
+}
